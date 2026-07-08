@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AI Quiz Generator - Quiz Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d0e1fb",
+                        "tertiary-container": "#bc4800",
+                        "tertiary": "#943700",
+                        "on-primary-container": "#eeefff",
+                        "surface-container-low": "#f3f3fe",
+                        "surface-dim": "#d9d9e5",
+                        "secondary": "#505f76",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2e3039",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#54647a",
+                        "surface-container-high": "#e7e7f3",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-fixed": "#360f00",
+                        "surface-container-highest": "#e1e2ed",
+                        "outline-variant": "#c3c6d7",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "surface-variant": "#e1e2ed",
+                        "on-tertiary-container": "#ffede6",
+                        "on-surface-variant": "#434655",
+                        "tertiary-fixed": "#ffdbcd",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-secondary": "#ffffff",
+                        "primary": "#004ac6",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "outline": "#737686",
+                        "on-error": "#ffffff",
+                        "background": "#faf8ff",
+                        "surface-tint": "#0053db",
+                        "inverse-on-surface": "#f0f0fb",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174b",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "primary-container": "#2563eb",
+                        "on-surface": "#191b23",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container": "#ededf9",
+                        "surface": "#faf8ff",
+                        "on-background": "#191b23"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "4px",
+                        "3xl": "64px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#F3F4F6] text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full h-16 fixed top-0 left-0 z-50 border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-gutter">
+<div class="flex items-center gap-4">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">AI Quiz Generator</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:opacity-80 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:opacity-80 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full" data-icon="help">help</span>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant cursor-pointer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4TvQfjtqnDAK0fGARy6qwAD8-diHrlHtGdN7U0XhxIt11EcjHmNUgGL6S2vskqN0zKwUSTVP-g8WgS6WgGc5XcJCgyqiadYkAtOUz_vIOpkvKjdNJkfOSdn2SVOHb5cyLL2pl2-KNFQIGnfTplAxLviMOYhCNrneqN79wYGzeqc7EfxfRcGN2wzJ1xZrS_Gm84N0aPp1JJNar0X8sW98T5FHjRdISDcg0OdP8pfxZt9BONLjEzRJo">
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="hidden md:flex bg-surface-container-lowest dark:bg-surface-container-lowest h-full w-64 fixed left-0 top-16 z-40 border-r border-outline-variant dark:border-outline flex-col p-md gap-sm">
+<div class="flex items-center gap-3 mb-6 px-3">
+<img alt="Project Logo" class="w-10 h-10 rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQHHU17D9q5-Z2MB-S-H7DROTRqadu9SATELGZTLh7xEG7rjZvt3VYtNfXpkKPKb3zt_xxr4VG77CAsz3-hyOT5Wqkh8fHPeOzFD6b57vcJGPN1E6A7CZAJI33g5bR7lWQ8imvyDQHpBXRoTaXgPHAFYhky6BwsE0f00R1gZDbbAoFlmUZfcVd4UyUmQVKp1bknuZOnNPJZFqpfUY0z9Sqoh_IxDfjI2cZ4cN6Hh3fSsbJ4j0emOol">
+<div>
+<div class="font-headline-sm text-headline-sm font-black text-primary">AI Quiz Gen</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Academic Portal</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md py-3 px-4 rounded-lg w-full text-center hover:bg-primary transition-colors cursor-pointer active:scale-95 mb-4 shadow-sm">New Quiz</button>
+<nav class="flex flex-col gap-1 w-full">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg hover:bg-secondary-container/50 transition-all cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg hover:bg-secondary-container/50 transition-all cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-md text-label-md">Generate Quiz</span>
+</a>
+<!-- Active state for Quiz History -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg hover:bg-secondary-container/50 transition-all cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">Quiz History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg hover:bg-secondary-container/50 transition-all cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg hover:bg-secondary-container/50 transition-all cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="pt-24 pb-16 md:pl-72 pr-4 md:pr-8 max-w-container-max mx-auto">
+<!-- Header -->
+<div class="mb-8">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Quiz Results</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Review your performance and see the correct answers.</p>
+</div>
+<!-- Performance Alert -->
+<div class="bg-secondary-container/30 border border-secondary-container text-primary-fixed-dim rounded-lg p-4 mb-8 flex items-center gap-3 shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="font-label-md text-label-md text-on-secondary-container">Excellent! Great work on completing the quiz.</span>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm flex flex-col items-center justify-center text-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant mb-1 uppercase tracking-wider">Score</span>
+<span class="font-headline-lg text-headline-lg text-primary">8/10</span>
+</div>
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm flex flex-col items-center justify-center text-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant mb-1 uppercase tracking-wider">Percentage</span>
+<span class="font-headline-lg text-headline-lg text-primary">80%</span>
+</div>
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm flex flex-col items-center justify-center text-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant mb-1 uppercase tracking-wider">Correct</span>
+<span class="font-headline-lg text-headline-lg text-[#16a34a]">8</span>
+</div>
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm flex flex-col items-center justify-center text-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant mb-1 uppercase tracking-wider">Incorrect</span>
+<span class="font-headline-lg text-headline-lg text-error">2</span>
+</div>
+</div>
+<!-- Quiz Details -->
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm mb-8">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-4">Quiz Details</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Topic</span>
+<span class="font-body-md text-body-md text-on-surface">Operating Systems</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Difficulty</span>
+<span class="font-body-md text-body-md text-on-surface">Medium</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Questions</span>
+<span class="font-body-md text-body-md text-on-surface">10</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Time Taken</span>
+<span class="font-body-md text-body-md text-on-surface">12:45</span>
+</div>
+</div>
+</div>
+<!-- Answers Review -->
+<div class="mb-8">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-4">Answer Review</h2>
+<div class="flex flex-col gap-6">
+<!-- Question 1 (Incorrect) -->
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm">
+<div class="flex items-start justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">1. Which scheduling algorithm may cause starvation?</h3>
+<span class="material-symbols-outlined text-error" data-icon="cancel" data-weight="fill">cancel</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+<div class="border border-[#D1D5DB] rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center text-xs">A</div>
+                            FCFS
+                        </div>
+<div class="border-2 border-error bg-error-container/20 rounded-lg p-4 font-body-md text-body-md flex items-center gap-3 text-on-surface">
+<div class="w-6 h-6 rounded-full border-error bg-error text-white flex items-center justify-center text-xs"><span class="material-symbols-outlined text-[14px]" data-icon="close">close</span></div>
+                            Round Robin (Your Choice)
+                        </div>
+<div class="border border-[#D1D5DB] rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center text-xs">C</div>
+                            SJF
+                        </div>
+<div class="border-2 border-[#16a34a] bg-[#16a34a]/10 rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-[#16a34a] text-white flex items-center justify-center text-xs"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span></div>
+                            Priority Scheduling
+                        </div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-surface-variant">
+<span class="font-label-md text-label-md text-[#16a34a]">Correct Answer: Option D - Priority Scheduling</span>
+</div>
+</div>
+<!-- Question 2 (Correct) -->
+<div class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg p-6 shadow-sm">
+<div class="flex items-start justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">2. What is the primary function of an operating system?</h3>
+<span class="material-symbols-outlined text-[#16a34a]" data-icon="check_circle" data-weight="fill">check_circle</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+<div class="border-2 border-[#16a34a] bg-[#16a34a]/10 rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-[#16a34a] text-white flex items-center justify-center text-xs"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span></div>
+                            Resource Management
+                        </div>
+<div class="border border-[#D1D5DB] rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center text-xs">B</div>
+                            Virus Protection
+                        </div>
+<div class="border border-[#D1D5DB] rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center text-xs">C</div>
+                            Data Encryption
+                        </div>
+<div class="border border-[#D1D5DB] rounded-lg p-4 font-body-md text-body-md flex items-center gap-3">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center text-xs">D</div>
+                            Hardware Manufacturing
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row items-center gap-4 border-t border-outline-variant pt-8">
+<button class="w-full sm:w-auto bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg hover:bg-primary transition-colors text-center shadow-sm">Take Another Quiz</button>
+<button class="w-full sm:w-auto border-2 border-outline text-on-surface-variant font-label-md text-label-md py-3 px-6 rounded-lg hover:bg-surface-container-high transition-colors text-center">Generate New Quiz</button>
+<button class="w-full sm:w-auto text-on-surface-variant font-label-md text-label-md py-3 px-6 rounded-lg hover:bg-surface-container-low transition-colors text-center">Back to Dashboard</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-md border-t border-outline-variant dark:border-outline md:pl-64 mt-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter max-w-container-max mx-auto">
+<span class="font-label-md text-label-md font-bold text-secondary dark:text-secondary-fixed">© 2024 AI Quiz Generator. Academic Tool.</span>
+<div class="flex gap-4 mt-4 md:mt-0">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quiz Categories | AI Quiz Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-secondary-container": "#54647a",
+                        "tertiary": "#943700",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#505f76",
+                        "primary": "#004ac6",
+                        "surface": "#faf8ff",
+                        "on-primary-container": "#eeefff",
+                        "inverse-primary": "#b4c5ff",
+                        "tertiary-container": "#bc4800",
+                        "surface-variant": "#e1e2ed",
+                        "on-background": "#191b23",
+                        "surface-container": "#ededf9",
+                        "on-primary-fixed": "#00174b",
+                        "surface-dim": "#d9d9e5",
+                        "surface-container-low": "#f3f3fe",
+                        "on-surface-variant": "#434655",
+                        "surface-bright": "#faf8ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-tint": "#0053db",
+                        "on-tertiary-container": "#ffede6",
+                        "on-secondary-fixed": "#0b1c30",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-container": "#d0e1fb",
+                        "primary-container": "#2563eb",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-error": "#ffffff",
+                        "background": "#faf8ff",
+                        "outline-variant": "#c3c6d7",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191b23",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3039",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e2ed",
+                        "surface-container-high": "#e7e7f3",
+                        "outline": "#737686",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-tertiary-fixed": "#360f00",
+                        "inverse-on-surface": "#f0f0fb",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "2xl": "48px",
+                        "xs": "4px",
+                        "3xl": "64px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm fixed top-0 w-full z-50">
+<div class="flex justify-between items-center px-lg h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[28px]">psychology</span>
+<span class="font-display text-headline-sm font-bold text-primary">AI Quiz Generator</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+<input class="pl-xl pr-md py-sm rounded-full border border-outline-variant bg-surface-container-low text-body-sm focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim outline-none w-64 transition-all" placeholder="Search..." type="text">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant w-[18px]">search</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant cursor-pointer active:opacity-80 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant cursor-pointer active:opacity-80 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-[calc(100vh-64px)] overflow-hidden max-w-container-max mx-auto w-full">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low hidden md:flex flex-col w-64 h-full border-r border-outline-variant flex-shrink-0">
+<div class="p-lg border-b border-outline-variant">
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Admin Panel</h2>
+<p class="text-body-sm text-on-surface-variant mt-xs">Management Console</p>
+<button class="mt-md w-full bg-primary-container text-on-primary py-sm px-md rounded-lg font-label-md hover:bg-[#1D4ED8] transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Generate New Quiz
+                </button>
+</div>
+<div class="flex-1 p-md overflow-y-auto space-y-sm">
+<!-- Nav Items -->
+<a class="flex items-center gap-md px-md py-sm mb-xs cursor-pointer text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm mb-xs cursor-pointer text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Users</span>
+</a>
+<!-- Active Item -->
+<a class="flex items-center gap-md px-md py-sm mb-xs cursor-pointer bg-secondary-container text-on-secondary-container rounded-lg font-semibold transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">category</span>
+<span>Categories</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm mb-xs cursor-pointer text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>Quiz History</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm mb-xs cursor-pointer text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="p-md border-t border-outline-variant">
+<a class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all duration-200 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-md md:p-lg lg:p-xl bg-background">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-lg gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Quiz Categories</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage and organize the knowledge domains for your AI quizzes.</p>
+</div>
+<button class="bg-primary-container text-on-primary py-sm px-lg rounded-lg font-label-md hover:bg-[#1D4ED8] transition-colors flex items-center justify-center gap-sm shadow-sm whitespace-nowrap self-start sm:self-auto">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Add Category
+                </button>
+</div>
+<!-- Dashboard Stats / Bento Style -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<div class="bg-surface rounded-xl border border-outline-variant p-md shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">category</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Categories</p>
+<p class="font-headline-md text-headline-md text-on-surface">24</p>
+</div>
+</div>
+<div class="bg-surface rounded-xl border border-outline-variant p-md shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">quiz</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Quizzes</p>
+<p class="font-headline-md text-headline-md text-on-surface">156</p>
+</div>
+</div>
+<div class="bg-surface rounded-xl border border-outline-variant p-md shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Most Popular</p>
+<p class="font-headline-md text-headline-sm text-on-surface line-clamp-1">Computer Science</p>
+</div>
+</div>
+</div>
+<!-- Categories Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md">
+<!-- Category Card 1 -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
+<div class="h-32 w-full relative bg-surface-container-highest">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 mix-blend-overlay" data-alt="Abstract digital representation of programming code and logic circuits, vibrant blue and teal neon lines on a dark background, high-tech modern aesthetic, clean and crisp resolution, soft glowing effects." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBN0KrR1AiUj_Rq2ZPMKFBrCbeeyvoEHv6saiuaMV4N059VVxiNs9_m0l2ivpe2pTjpJOdzKZ5lf8zByCHRPSiZl3sUzUEwuELDjj6c95k-FVfqgioMfKuxYqAjz5Rb_TcXV4kf2Hm9wJwIkiO8gQGpH42pwzgcGl2ZHYiYp2uwcjIO-4z_iK2R1byfZuJndGD2dk_T2ATkfTbefZcHdFFguv9IRdiNSjB1cfgZfvPKgxj2KOF04Ort')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute top-sm right-sm flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-primary transition-colors hover:bg-surface shadow-sm">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-error transition-colors hover:bg-error-container shadow-sm">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Computer Science</h3>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-1 rounded-full">42 Quizzes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">Algorithms, data structures, programming languages, and general computing concepts.</p>
+<div class="text-xs text-outline font-label-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">update</span> Last updated 2 days ago
+                        </div>
+</div>
+</div>
+<!-- Category Card 2 -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
+<div class="h-32 w-full relative bg-surface-container-highest">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 mix-blend-overlay" data-alt="A macro shot of a complex physical map showing topography and borders, warm earth tones, shallow depth of field, bright studio lighting, conveying geography and history, clean modern presentation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD1xoo0GLqrM4DC6tnvgRSIcQrdVl2z3mhegsnTXDrmOvDysaZLd4hwwarPhohOt_BTldkd8a4bMpvKhsy8loxftD3TkuHBX5wfKZS9zm9a778LQEdL42iQEt2OhGjFYUfN5vFnKaRHUOwNiNiyV1tKOeppfuqZf6ZadnXGvZFDTl5Z6RCOr4QdEVab_eDx1_JBVmx-BMit74sy1NjfMQe3CFsJHmoahJBTE6zyGlMUDeqmZ069IiyI')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute top-sm right-sm flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-primary transition-colors hover:bg-surface shadow-sm">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-error transition-colors hover:bg-error-container shadow-sm">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">World History</h3>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-1 rounded-full">28 Quizzes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">Global historical events, civilizations, timelines, and significant historical figures.</p>
+<div class="text-xs text-outline font-label-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">update</span> Last updated 5 days ago
+                        </div>
+</div>
+</div>
+<!-- Category Card 3 -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
+<div class="h-32 w-full relative bg-surface-container-highest">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 mix-blend-overlay" data-alt="Abstract molecular structures and chemical bonds glowing in soft neon colors over a pure white clean background, conveying biology and chemistry, highly detailed, scientific modern aesthetics." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBfbSl44qLNE1oBqfD-eIEtlB3Ca9yIe9dzUAOHkUpmMOhmdDcD9bGZg-Kcks8E69K4qSDtI2YhMfm90hzmwc3aT_8yuSjaJ36NwbEwsrnVNO8Ft8reJdteGY1QmPe3AwVWnFaL0gINVm--w4hw5HwMD-sK0kgovcsM-66vAA_gRD8fHydgnhELcSchZlSxNlR53z1bl54HY1pnFZRsu7hkhed-f0g8XncpEbwc4VbHhI7XYjYwgiBi')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute top-sm right-sm flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-primary transition-colors hover:bg-surface shadow-sm">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-surface/90 text-on-surface-variant flex items-center justify-center hover:text-error transition-colors hover:bg-error-container shadow-sm">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Natural Sciences</h3>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-1 rounded-full">35 Quizzes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">Biology, chemistry, physics, and environmental science topics.</p>
+<div class="text-xs text-outline font-label-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">update</span> Last updated 1 week ago
+                        </div>
+</div>
+</div>
+<!-- Category Card 4 (Empty/Add New State) -->
+<div class="bg-surface-container-low rounded-xl border-2 border-dashed border-outline-variant shadow-sm overflow-hidden flex flex-col hover:border-primary transition-colors cursor-pointer group min-h-[250px] items-center justify-center p-lg">
+<div class="w-16 h-16 rounded-full bg-surface flex items-center justify-center text-outline group-hover:text-primary group-hover:bg-primary-fixed transition-colors mb-sm shadow-sm">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface-variant group-hover:text-primary transition-colors">Create New Category</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs text-center max-w-[200px]">Define a new knowledge domain for your AI generator.</p>
+</div>
+</div>
+<!-- Pagination (Simple) -->
+<div class="mt-xl flex justify-center items-center gap-sm">
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-label-md font-bold">1</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant font-label-md">2</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant font-label-md">3</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+</body></html>
