@@ -1,18 +1,17 @@
 # QuizAI Runnable Website
 
-This workspace now contains a PHP/MySQL version of the QuizAI design system.
+This workspace contains a PHP/MySQL version of the QuizAI design system.
 
-## What is included
+## Included
 
-- Public landing page
-- Login, sign up, forgot password, reset password, and email verification screens
+- Landing page
+- Login, sign up, forgot password, reset password, and email verification pages
 - Learner dashboard
-- Quiz creation/generation screen
-- Quiz taking and results flow
-- Profile and history screens
-- Admin dashboard, users, categories, and settings screens
-- Shared CSS and jQuery behavior
-- MySQL schema with automatic table bootstrap in PHP
+- Quiz creation and taking flow
+- Results, history, and profile pages
+- Admin dashboard, users, categories, and settings pages
+- Shared CSS and jQuery
+- MySQL schema plus PHP bootstrap that can create tables when a DB connection exists
 
 ## Local setup with XAMPP
 
@@ -32,23 +31,3 @@ This workspace now contains a PHP/MySQL version of the QuizAI design system.
 
 - The PHP bootstrap also creates tables if the database connection succeeds and the schema is missing.
 - The app falls back to demo data for read-only screens when the database is unavailable.
-# QuizAI Runnable Website
-
-This workspace contains a PHP/MySQL version of the QuizAI design system.
-
-## Included
-
-- Landing page
-- Login, sign up, forgot password, reset password, and email verification pages
-- Learner dashboard
-- Quiz creation and taking flow
-- Results, history, and profile pages
-- Admin dashboard, users, categories, and settings pages
-- Shared CSS and jQuery
-- MySQL schema plus PHP bootstrap that can create tables when a DB connection exists
-
-## Demo login
-
-- Admin: admin@quizai.test
-- Learner: learner@quizai.test
-- Password: password123
