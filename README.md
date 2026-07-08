@@ -2,6 +2,10 @@
 
 This workspace contains a PHP/MySQL version of the QuizAI design system.
 
+## Project Description
+
+QuizAI is a runnable quiz generation and management website built with HTML, CSS, JavaScript, jQuery, PHP, and MySQL. It includes user login, quiz creation, quiz taking, history tracking, and admin management pages. The project was converted from design mockups into a working local web app for college use.
+
 ## Included
 
 - Landing page
