@@ -20,7 +20,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Setting key is required.', 'error');
         }
 
-        header('Location: /admin/settings.php');
+        header('Location: ' . quizai_base_url('admin/settings.php'));
         exit;
     }
 
@@ -35,7 +35,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Setting deleted.', 'success');
         }
 
-        header('Location: /admin/settings.php');
+        header('Location: ' . quizai_base_url('admin/settings.php'));
         exit;
     }
 }

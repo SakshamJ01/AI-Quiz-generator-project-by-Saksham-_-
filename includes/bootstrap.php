@@ -13,6 +13,26 @@ function quizai_h($value)
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+function quizai_base_url($path = '')
+{
+    static $baseUrl = null;
+
+    if ($baseUrl === null) {
+        $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+        $baseUrl = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+
+        if (basename($baseUrl) === 'admin') {
+            $baseUrl = rtrim(dirname($baseUrl), '/');
+        }
+
+        if ($baseUrl === '/' || $baseUrl === '.') {
+            $baseUrl = '';
+        }
+    }
+
+    return $baseUrl . '/' . ltrim((string) $path, '/');
+}
+
 function quizai_flash($message = null, $type = 'success')
 {
     if ($message !== null) {
@@ -446,9 +466,9 @@ function quizai_render_start($title, $mode = 'public', $active = 'dashboard')
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo quizai_h(quizai_base_url('assets/css/style.css')); ?>">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script defer src="/assets/js/app.js"></script>
+    <script defer src="<?php echo quizai_h(quizai_base_url('assets/js/app.js')); ?>"></script>
 </head>
 <body class="<?php echo $mode === 'app' ? 'app-body' : ($mode === 'auth' ? 'auth-body' : 'public-body'); ?>">
     <?php if ($mode === 'app') : ?>
@@ -462,23 +482,23 @@ function quizai_render_start($title, $mode = 'public', $active = 'dashboard')
                     </div>
                 </div>
                 <nav class="side-nav">
-                    <a class="<?php echo $active === 'dashboard' ? 'active' : ''; ?>" href="/dashboard.php"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
-                    <a class="<?php echo $active === 'quiz-create' ? 'active' : ''; ?>" href="/quiz-create.php"><span class="material-symbols-outlined">auto_awesome</span> Generate Quiz</a>
-                    <a class="<?php echo $active === 'take-quiz' ? 'active' : ''; ?>" href="/take-quiz.php"><span class="material-symbols-outlined">quiz</span> Take Quiz</a>
-                    <a class="<?php echo $active === 'history' ? 'active' : ''; ?>" href="/history.php"><span class="material-symbols-outlined">history</span> History</a>
-                    <a class="<?php echo $active === 'profile' ? 'active' : ''; ?>" href="/profile.php"><span class="material-symbols-outlined">person</span> Profile</a>
+                    <a class="<?php echo $active === 'dashboard' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('dashboard.php')); ?>"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
+                    <a class="<?php echo $active === 'quiz-create' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('quiz-create.php')); ?>"><span class="material-symbols-outlined">auto_awesome</span> Generate Quiz</a>
+                    <a class="<?php echo $active === 'take-quiz' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('take-quiz.php')); ?>"><span class="material-symbols-outlined">quiz</span> Take Quiz</a>
+                    <a class="<?php echo $active === 'history' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('history.php')); ?>"><span class="material-symbols-outlined">history</span> History</a>
+                    <a class="<?php echo $active === 'profile' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('profile.php')); ?>"><span class="material-symbols-outlined">person</span> Profile</a>
                     <?php if (($user['role'] ?? '') === 'admin') : ?>
                         <div class="nav-divider"></div>
-                        <a class="<?php echo $active === 'admin-dashboard' ? 'active' : ''; ?>" href="/admin/index.php"><span class="material-symbols-outlined">space_dashboard</span> Admin</a>
-                        <a class="<?php echo $active === 'users' ? 'active' : ''; ?>" href="/admin/users.php"><span class="material-symbols-outlined">group</span> Users</a>
-                        <a class="<?php echo $active === 'categories' ? 'active' : ''; ?>" href="/admin/categories.php"><span class="material-symbols-outlined">category</span> Categories</a>
-                        <a class="<?php echo $active === 'settings' ? 'active' : ''; ?>" href="/admin/settings.php"><span class="material-symbols-outlined">settings</span> Settings</a>
+                        <a class="<?php echo $active === 'admin-dashboard' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('admin/index.php')); ?>"><span class="material-symbols-outlined">space_dashboard</span> Admin</a>
+                        <a class="<?php echo $active === 'users' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('admin/users.php')); ?>"><span class="material-symbols-outlined">group</span> Users</a>
+                        <a class="<?php echo $active === 'categories' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('admin/categories.php')); ?>"><span class="material-symbols-outlined">category</span> Categories</a>
+                        <a class="<?php echo $active === 'settings' ? 'active' : ''; ?>" href="<?php echo quizai_h(quizai_base_url('admin/settings.php')); ?>"><span class="material-symbols-outlined">settings</span> Settings</a>
                     <?php endif; ?>
                 </nav>
                 <div class="sidebar-footer">
                     <div class="sidebar-user"><?php echo quizai_h($user['name'] ?? 'Guest'); ?></div>
                     <div class="sidebar-role"><?php echo quizai_h(ucfirst($user['role'] ?? 'visitor')); ?></div>
-                    <a class="ghost-button full-width" href="/logout.php">Logout</a>
+                    <a class="ghost-button full-width" href="<?php echo quizai_h(quizai_base_url('logout.php')); ?>">Logout</a>
                 </div>
             </aside>
             <div class="app-panel">
@@ -489,8 +509,8 @@ function quizai_render_start($title, $mode = 'public', $active = 'dashboard')
                         <h1><?php echo quizai_h($title); ?></h1>
                     </div>
                     <div class="topbar-actions">
-                        <a class="secondary-button" href="/quiz-create.php">New Quiz</a>
-                        <a class="avatar-pill" href="/profile.php"><?php echo quizai_h(strtoupper(substr($user['name'] ?? 'U', 0, 1))); ?></a>
+                        <a class="secondary-button" href="<?php echo quizai_h(quizai_base_url('quiz-create.php')); ?>">New Quiz</a>
+                        <a class="avatar-pill" href="<?php echo quizai_h(quizai_base_url('profile.php')); ?>"><?php echo quizai_h(strtoupper(substr($user['name'] ?? 'U', 0, 1))); ?></a>
                     </div>
                 </header>
                 <main class="page-content">
@@ -508,9 +528,9 @@ function quizai_render_start($title, $mode = 'public', $active = 'dashboard')
                 </div>
             </div>
             <nav class="public-nav">
-                <a href="/index.php">Home</a>
-                <a href="/login.php">Login</a>
-                <a href="/signup.php">Sign up</a>
+                <a href="<?php echo quizai_h(quizai_base_url('index.php')); ?>">Home</a>
+                <a href="<?php echo quizai_h(quizai_base_url('login.php')); ?>">Login</a>
+                <a href="<?php echo quizai_h(quizai_base_url('signup.php')); ?>">Sign up</a>
             </nav>
         </header>
         <main>

@@ -63,7 +63,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Title and category are required.', 'error');
         }
 
-        header('Location: /quiz-create.php' . ($quizId > 0 ? '?edit=' . $quizId : ''));
+        header('Location: ' . quizai_base_url('quiz-create.php') . ($quizId > 0 ? '?edit=' . $quizId : ''));
         exit;
     }
 
@@ -77,7 +77,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Quiz deleted.', 'success');
         }
 
-        header('Location: /quiz-create.php');
+        header('Location: ' . quizai_base_url('quiz-create.php'));
         exit;
     }
 
@@ -92,7 +92,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Quiz status updated.', 'success');
         }
 
-        header('Location: /quiz-create.php');
+        header('Location: ' . quizai_base_url('quiz-create.php'));
         exit;
     }
 }
@@ -147,8 +147,8 @@ quizai_render_start('Generate Quiz', 'app', 'quiz-create');
             </div>
             <div class="field-row">
                 <button class="primary-button" type="submit"><?php echo $editQuiz ? 'Update quiz' : 'Create quiz'; ?></button>
-                <?php if ($editQuiz) : ?><a class="secondary-button" href="/quiz-create.php">Cancel</a><?php endif; ?>
-                <a class="secondary-button" href="/take-quiz.php">Open sample quiz</a>
+                <?php if ($editQuiz) : ?><a class="secondary-button" href="<?php echo quizai_h(quizai_base_url('quiz-create.php')); ?>">Cancel</a><?php endif; ?>
+                <a class="secondary-button" href="<?php echo quizai_h(quizai_base_url('take-quiz.php')); ?>">Open sample quiz</a>
             </div>
         </form>
     </section>
@@ -176,7 +176,7 @@ quizai_render_start('Generate Quiz', 'app', 'quiz-create');
                     <td><?php echo quizai_h($quiz['created_at']); ?></td>
                     <td>
                         <div class="field-row">
-                            <a class="ghost-button" href="/quiz-create.php?edit=<?php echo (int) $quiz['id']; ?>">Edit</a>
+                            <a class="ghost-button" href="<?php echo quizai_h(quizai_base_url('quiz-create.php?edit=' . (int) $quiz['id'])); ?>">Edit</a>
                             <form method="post" style="display:inline; margin:0;">
                                 <input type="hidden" name="action" value="toggle_status">
                                 <input type="hidden" name="id" value="<?php echo (int) $quiz['id']; ?>">

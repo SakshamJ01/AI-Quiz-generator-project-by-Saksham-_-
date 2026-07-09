@@ -23,7 +23,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Please fill in name, email, role, and a password of at least 6 characters.', 'error');
         }
 
-        header('Location: /admin/users.php');
+        header('Location: ' . quizai_base_url('admin/users.php'));
         exit;
     }
 
@@ -50,7 +50,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Unable to update user.', 'error');
         }
 
-        header('Location: /admin/users.php?edit=' . $userId);
+        header('Location: ' . quizai_base_url('admin/users.php?edit=' . $userId));
         exit;
     }
 
@@ -68,7 +68,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('You cannot delete your own logged-in account.', 'error');
         }
 
-        header('Location: /admin/users.php');
+        header('Location: ' . quizai_base_url('admin/users.php'));
         exit;
     }
 }
@@ -108,7 +108,7 @@ quizai_render_start('Manage Users', 'app', 'users');
             <div class="field"><label>Password <?php echo $editUser ? '(leave blank to keep current)' : ''; ?></label><input name="password" type="password" <?php echo $editUser ? '' : 'required'; ?> placeholder="At least 6 characters"></div>
             <div class="field-row">
                 <button class="primary-button" type="submit"><?php echo $editUser ? 'Update user' : 'Create user'; ?></button>
-                <?php if ($editUser) : ?><a class="secondary-button" href="/admin/users.php">Cancel</a><?php endif; ?>
+                <?php if ($editUser) : ?><a class="secondary-button" href="<?php echo quizai_h(quizai_base_url('admin/users.php')); ?>">Cancel</a><?php endif; ?>
             </div>
         </form>
     </section>
@@ -125,7 +125,7 @@ quizai_render_start('Manage Users', 'app', 'users');
                     <td><?php echo quizai_h($user['role']); ?></td>
                     <td>
                         <div class="field-row">
-                            <a class="ghost-button" href="/admin/users.php?edit=<?php echo (int) $user['id']; ?>">Edit</a>
+                            <a class="ghost-button" href="<?php echo quizai_h(quizai_base_url('admin/users.php?edit=' . (int) $user['id'])); ?>">Edit</a>
                             <form method="post" onsubmit="return confirm('Delete this user?');" style="display:inline; margin:0;">
                                 <input type="hidden" name="action" value="delete_user">
                                 <input type="hidden" name="id" value="<?php echo (int) $user['id']; ?>">

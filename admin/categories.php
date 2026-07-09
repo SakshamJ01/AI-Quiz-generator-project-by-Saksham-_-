@@ -21,7 +21,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Category name is required.', 'error');
         }
 
-        header('Location: /admin/categories.php');
+        header('Location: ' . quizai_base_url('admin/categories.php'));
         exit;
     }
 
@@ -40,7 +40,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Unable to update category.', 'error');
         }
 
-        header('Location: /admin/categories.php?edit=' . $categoryId);
+        header('Location: ' . quizai_base_url('admin/categories.php?edit=' . $categoryId));
         exit;
     }
 
@@ -54,7 +54,7 @@ if ($db && $_SERVER['REQUEST_METHOD'] === 'POST') {
             quizai_flash('Category deleted.', 'success');
         }
 
-        header('Location: /admin/categories.php');
+        header('Location: ' . quizai_base_url('admin/categories.php'));
         exit;
     }
 }
@@ -85,7 +85,7 @@ quizai_render_start('Categories', 'app', 'categories');
             <div class="field"><label>Description</label><textarea name="description" placeholder="Category description"><?php echo quizai_h($editCategory['description'] ?? ''); ?></textarea></div>
             <div class="field-row">
                 <button class="primary-button" type="submit"><?php echo $editCategory ? 'Update category' : 'Save category'; ?></button>
-                <?php if ($editCategory) : ?><a class="secondary-button" href="/admin/categories.php">Cancel</a><?php endif; ?>
+                <?php if ($editCategory) : ?><a class="secondary-button" href="<?php echo quizai_h(quizai_base_url('admin/categories.php')); ?>">Cancel</a><?php endif; ?>
             </div>
         </form>
     </section>
@@ -101,7 +101,7 @@ quizai_render_start('Categories', 'app', 'categories');
                     <td><?php echo quizai_h($category['description']); ?></td>
                     <td>
                         <div class="field-row">
-                            <a class="ghost-button" href="/admin/categories.php?edit=<?php echo (int) $category['id']; ?>">Edit</a>
+                            <a class="ghost-button" href="<?php echo quizai_h(quizai_base_url('admin/categories.php?edit=' . (int) $category['id'])); ?>">Edit</a>
                             <form method="post" onsubmit="return confirm('Delete this category?');" style="display:inline; margin:0;">
                                 <input type="hidden" name="action" value="delete_category">
                                 <input type="hidden" name="id" value="<?php echo (int) $category['id']; ?>">
