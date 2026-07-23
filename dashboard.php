@@ -1,63 +1,74 @@
 <?php
-require_once __DIR__ . '/includes/bootstrap.php';
-quizai_require_login();
-$db = quizai_db();
-$stats = quizai_site_stats($db);
-$quizzes = quizai_recent_quizzes($db, 5);
-$attempts = quizai_recent_attempts($db, 5);
+require_once 'includes/bootstrap.php';
+require_login();
+$connection = db();
 
-quizai_render_start('Dashboard', 'app', 'dashboard');
+$user_id = $_SESSION['user_id'];
+$attempts = $connection->query("SELECT * FROM quiz_attempts WHERE user_id = $user_id ORDER BY id DESC LIMIT 5");
+$total_attempts = $connection->query("SELECT COUNT(*) AS total FROM quiz_attempts WHERE user_id = $user_id")->fetch_assoc();
 ?>
-<div class="dashboard-grid">
-    <div class="stat-card"><div class="eyebrow">Learners</div><div class="stat-value"><?php echo number_format($stats['users']); ?></div><div class="stats-subtitle">Active accounts and demo users.</div></div>
-    <div class="stat-card"><div class="eyebrow">Quizzes</div><div class="stat-value"><?php echo number_format($stats['quizzes']); ?></div><div class="stats-subtitle">Published and draft quiz records.</div></div>
-    <div class="stat-card"><div class="eyebrow">Attempts</div><div class="stat-value"><?php echo number_format($stats['attempts']); ?></div><div class="stats-subtitle">Tracked quiz submissions.</div></div>
-    <div class="stat-card"><div class="eyebrow">Categories</div><div class="stat-value"><?php echo number_format($stats['categories']); ?></div><div class="stats-subtitle">Content groupings for quizzes.</div></div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Quiz AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand"><span class="brand-mark">Q</span> QuizWhizAI</div>
+            <div class="sidebar-line"></div>
+            <nav class="side-nav">
+                <a class="active" href="dashboard.php"><span class="menu-icon">D</span>Dashboard</a>
+                <a href="take-quiz.php"><span class="menu-icon">Q</span>Take Quiz</a>
+                <a href="login.php?logout=1"><span class="menu-icon">L</span>Logout</a>
+            </nav>
+            <div class="sidebar-bottom">PHP + MySQL project</div>
+        </aside>
 
-<div class="content-grid">
-    <section class="card col-7">
-        <div class="section-title">Recent quizzes</div>
-        <table class="table">
-            <thead><tr><th>Title</th><th>Status</th><th>Questions</th><th>Created</th></tr></thead>
-            <tbody>
-            <?php foreach ($quizzes as $quiz) : ?>
-                <tr>
-                    <td><?php echo quizai_h($quiz['title']); ?></td>
-                    <td><?php echo quizai_h($quiz['status']); ?></td>
-                    <td><?php echo quizai_h($quiz['questions']); ?></td>
-                    <td><?php echo quizai_h($quiz['created_at']); ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
+        <main class="main-area">
+            <header class="topbar">
+                <span class="topbar-title">Student Panel</span>
+                <div class="profile"><span class="avatar">SA</span><span><b><?php echo h($_SESSION['user_name']); ?></b><small>Student account</small></span></div>
+            </header>
 
-    <section class="card col-5">
-        <div class="section-title">Quick actions</div>
-        <div class="metric-stack">
-            <a class="primary-button" href="quiz-create.php">Generate new quiz</a>
-            <a class="secondary-button" href="take-quiz.php">Take a quiz</a>
-            <a class="secondary-button" href="history.php">Review history</a>
-            <a class="secondary-button" href="profile.php">Edit profile</a>
-        </div>
-    </section>
+            <div class="content">
+                <div class="page-heading">
+                    <div><p class="eyebrow">OVERVIEW</p><h1>Dashboard</h1></div>
+                    <a class="button-link" href="take-quiz.php">+ Take a quiz</a>
+                </div>
 
-    <section class="table-card col-12">
-        <div class="section-title">Recent attempts</div>
-        <table class="table">
-            <thead><tr><th>Learner</th><th>Quiz</th><th>Score</th><th>Finished</th></tr></thead>
-            <tbody>
-            <?php foreach ($attempts as $attempt) : ?>
-                <tr>
-                    <td><?php echo quizai_h($attempt['name']); ?></td>
-                    <td><?php echo quizai_h($attempt['title']); ?></td>
-                    <td><?php echo quizai_h($attempt['score']); ?></td>
-                    <td><?php echo quizai_h($attempt['finished_at']); ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
-</div>
-<?php quizai_render_end('app'); ?>
+                <div class="stats">
+                    <div class="stat-card"><div><span class="stat-label">Total Attempts</span><strong><?php echo $total_attempts['total']; ?></strong><small>Saved in your account</small></div><span class="stat-icon purple">Q</span></div>
+                    <div class="stat-card"><div><span class="stat-label">Quiz Mode</span><strong>Topic based</strong><small>Enter any subject</small></div><span class="stat-icon blue">T</span></div>
+                    <div class="stat-card"><div><span class="stat-label">Project Type</span><strong>PHP + MySQL</strong><small>Running through XAMPP</small></div><span class="stat-icon green">D</span></div>
+                </div>
+
+                <div class="card table-card">
+                    <div class="section-heading"><div><h2>Recent Quiz Attempts</h2><p>Your latest submitted quizzes</p></div><a href="take-quiz.php">New quiz &rarr;</a></div>
+
+            <?php if ($attempts->num_rows == 0) { ?>
+                <div class="empty-state"><span>Q</span><p>No quiz attempts yet. Start by taking your first quiz.</p><a class="button-link" href="take-quiz.php">Create your first quiz</a></div>
+            <?php } else { ?>
+                <table>
+                    <tr>
+                        <th>Topic</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+
+                    <?php while ($row = $attempts->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo h($row['topic']); ?></td>
+                        <td><?php echo $row['score']; ?> / <?php echo $row['total']; ?></td>
+                        <td><?php echo $row['created_at']; ?></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+                <?php } ?>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

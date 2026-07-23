@@ -1,137 +1,77 @@
 <?php
-require_once __DIR__ . '/includes/bootstrap.php';
-$db = quizai_db();
+require_once 'includes/bootstrap.php';
+$connection = db();
+$error = '';
+$email_value = 'student@test.com';
 
-if (quizai_current_user()) {
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}
+
+if (is_logged_in()) {
     header('Location: dashboard.php');
     exit;
 }
 
-$error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = (string) ($_POST['password'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $email_value = $email;
 
-    if ($db) {
-        $stmt = $db->prepare('SELECT id, name, email, password, role FROM users WHERE email = ? LIMIT 1');
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+    $stmt = $connection->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-        if ($user && (password_verify($password, $user['password']) || hash_equals($user['password'], $password))) {
-            quizai_login_user($user);
-            quizai_flash('Welcome back, ' . $user['name'] . '.', 'success');
-            header('Location: ' . ($user['role'] === 'admin' ? 'admin/index.php' : 'dashboard.php'));
-            exit;
-        }
-    } elseif ($email === 'admin@quizai.test' && $password === 'password123') {
-        quizai_login_user(['id' => 1, 'name' => 'QuizAI Admin', 'email' => $email, 'role' => 'admin']);
-        header('Location: admin/index.php');
-        exit;
-    } elseif ($email === 'learner@quizai.test' && $password === 'password123') {
-        quizai_login_user(['id' => 2, 'name' => 'Demo Learner', 'email' => $email, 'role' => 'learner']);
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_name'] = $user['name'];
         header('Location: dashboard.php');
         exit;
+    } else {
+        $error = 'Invalid email or password';
     }
-
-    $error = 'Invalid email or password.';
 }
-
-quizai_render_start('Login', 'auth');
 ?>
-<div class="auth-card">
-    <div class="brand-block" style="margin-bottom: 18px;">
-        <div class="brand-mark">Q</div>
-        <div>
-            <div class="brand-name">QuizAI</div>
-            <div class="brand-subtitle">Welcome back</div>
-        </div>
-    </div>
-    <h2>Sign in to continue</h2>
-    <p>Use the demo account or connect your own MySQL database through XAMPP.</p>
-    <?php echo quizai_flash(); ?>
-    <?php if ($error) : ?>
-        <div class="flash flash-error"><?php echo quizai_h($error); ?></div>
-    <?php endif; ?>
-    <form method="post">
-        <div class="field">
-            <label>Email</label>
-            <input name="email" type="email" required placeholder="name@example.com">
-        </div>
-        <div class="field password-field">
-            <label>Password</label>
-            <div class="field-row" style="align-items: center;">
-                <input name="password" type="password" required placeholder="••••••••" style="flex: 1;">
-                <button class="ghost-button password-toggle" type="button"><span class="material-symbols-outlined">visibility_off</span></button>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Quiz AI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="page">
+        <div class="login-card">
+            <div class="logo">Q</div>
+            <h1>Quiz AI</h1>
+            <p class="subtitle">Login with database account</p>
+
+            <?php if ($error != '') { ?>
+                <p class="error"><?php echo h($error); ?></p>
+            <?php } ?>
+
+            <form method="post">
+                <label>Email</label>
+                <input type="email" name="email" value="<?php echo h($email_value); ?>" required>
+
+                <label>Password</label>
+                <input type="password" name="password" value="12345" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="form-link-row">
+                New user? <a class="quiet-link" href="register.php">Create account</a>
+            </p>
+
+            <div class="note">
+                <p><b>Demo email:</b> student@test.com</p>
+                <p><b>Demo password:</b> 12345</p>
             </div>
         </div>
-        <div class="field-row" style="justify-content: space-between; align-items: center;">
-            <label style="display: inline-flex; gap: 8px; align-items: center; margin: 0;"><input type="checkbox" name="remember"> Remember me</label>
-            <a class="muted" href="forgot-password.php">Forgot password?</a>
-        </div>
-        <div class="field-row">
-            <button class="primary-button" type="submit">Login</button>
-            <a class="secondary-button" href="signup.php">Create account</a>
-        </div>
-    </form>
-    <p class="center-note" style="margin-top: 16px;">Demo credentials: admin@quizai.test / password123</p>
-</div>
-<?php quizai_render_end('auth'); ?>
-<?php
-require_once __DIR__ . '/includes/bootstrap.php';
-$db = quizai_db();
-
-if (quizai_current_user()) {
-    header('Location: dashboard.php');
-    exit;
-}
-
-$error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = (string) ($_POST['password'] ?? '');
-
-    if ($db) {
-        $stmt = $db->prepare('SELECT id, name, email, password, role FROM users WHERE email = ? LIMIT 1');
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if ($user && (password_verify($password, $user['password']) || hash_equals($user['password'], $password))) {
-            quizai_login_user($user);
-            quizai_flash('Welcome back, ' . $user['name'] . '.', 'success');
-            header('Location: ' . ($user['role'] === 'admin' ? 'admin/index.php' : 'dashboard.php'));
-            exit;
-        }
-    } elseif ($email === 'admin@quizai.test' && $password === 'password123') {
-        quizai_login_user(['id' => 1, 'name' => 'QuizAI Admin', 'email' => $email, 'role' => 'admin']);
-        header('Location: admin/index.php');
-        exit;
-    } elseif ($email === 'learner@quizai.test' && $password === 'password123') {
-        quizai_login_user(['id' => 2, 'name' => 'Demo Learner', 'email' => $email, 'role' => 'learner']);
-        header('Location: dashboard.php');
-        exit;
-    }
-
-    $error = 'Invalid email or password.';
-}
-
-quizai_render_start('Login', 'auth');
-?>
-<div class="auth-card">
-    <div class="brand-block" style="margin-bottom: 18px;"><div class="brand-mark">Q</div><div><div class="brand-name">QuizAI</div><div class="brand-subtitle">Welcome back</div></div></div>
-    <h2>Sign in to continue</h2>
-    <p>Use the demo account or connect your own MySQL database through XAMPP.</p>
-    <?php echo quizai_flash(); ?>
-    <?php if ($error) : ?><div class="flash flash-error"><?php echo quizai_h($error); ?></div><?php endif; ?>
-    <form method="post">
-        <div class="field"><label>Email</label><input name="email" type="email" required placeholder="name@example.com"></div>
-        <div class="field password-field"><label>Password</label><div class="field-row" style="align-items: center;"><input name="password" type="password" required placeholder="••••••••" style="flex: 1;"><button class="ghost-button password-toggle" type="button"><span class="material-symbols-outlined">visibility_off</span></button></div></div>
-        <div class="field-row" style="justify-content: space-between; align-items: center;"><label style="display: inline-flex; gap: 8px; align-items: center; margin: 0;"><input type="checkbox" name="remember"> Remember me</label><a class="muted" href="forgot-password.php">Forgot password?</a></div>
-        <div class="field-row"><button class="primary-button" type="submit">Login</button><a class="secondary-button" href="signup.php">Create account</a></div>
-    </form>
-    <p class="center-note" style="margin-top: 16px;">Demo credentials: admin@quizai.test / password123</p>
-</div>
-<?php quizai_render_end('auth'); ?>
+    </div>
+</body>
+</html>
