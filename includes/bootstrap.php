@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/config.php';
-
 if (file_exists(__DIR__ . '/config.local.php')) {
     require_once __DIR__ . '/config.local.php';
 }
@@ -92,46 +90,6 @@ function require_login()
         header('Location: login.php');
         exit;
     }
-}
-
-function make_quiz($topic)
-{
-    $topic = trim($topic);
-
-    if ($topic == '') {
-        $topic = 'General Knowledge';
-    }
-
-    return [
-        'topic' => $topic,
-        'questions' => [
-            [
-                'question' => 'What is ' . $topic . ' mainly about?',
-                'options' => ['Learning about ' . $topic, 'Only playing games', 'Only watching movies', 'Only sleeping'],
-                'answer' => 0
-            ],
-            [
-                'question' => 'Which one is useful when studying ' . $topic . '?',
-                'options' => ['Practice', 'Guessing always', 'Ignoring notes', 'Closing the book'],
-                'answer' => 0
-            ],
-            [
-                'question' => 'What should a beginner do first in ' . $topic . '?',
-                'options' => ['Start with basics', 'Skip the basics', 'Avoid examples', 'Never revise'],
-                'answer' => 0
-            ],
-            [
-                'question' => 'Why is ' . $topic . ' important?',
-                'options' => ['It improves knowledge', 'It wastes all time', 'It has no use', 'It stops learning'],
-                'answer' => 0
-            ],
-            [
-                'question' => 'This quiz was generated for which topic?',
-                'options' => [$topic, 'Cricket', 'Cooking', 'Travel'],
-                'answer' => 0
-            ]
-        ]
-    ];
 }
 
 function generate_ai_quiz($topic, $difficulty = 'beginner', $question_count = 5, &$error_message = '')

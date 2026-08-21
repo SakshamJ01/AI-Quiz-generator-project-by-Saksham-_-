@@ -4,7 +4,6 @@ require_login();
 $connection = db();
 
 $quiz = $_SESSION['quiz'] ?? null;
-$score = null;
 $message = '';
 
 if (isset($_POST['generate'])) {
