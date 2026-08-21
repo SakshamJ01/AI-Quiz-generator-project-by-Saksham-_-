@@ -1,1 +1,6 @@
 includes/config.local.php
+uploads/books/*
+uploads/covers/*
+!uploads/books/.gitkeep
+!uploads/covers/.gitkeep
+uploads/library.json
