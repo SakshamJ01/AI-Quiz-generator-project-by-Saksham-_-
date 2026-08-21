@@ -138,6 +138,16 @@ select:focus { border-color: #b16ae7; box-shadow: 0 0 0 3px #f1e3fb; outline: 0;
 .question-count { color: #9238eb; background: #f4e8fd; padding: 7px 10px; border-radius: 6px; font-size: 11px; }
 .quiz-card form { padding: 0 24px 24px; }
 .question { padding: 18px 0; border-top: 1px solid #f0f0f3; }
+.quiz-step { display: none; min-height: 260px; }
+.quiz-step.active-step { display: block; animation: quiz-step-in .22s ease-out; }
+@keyframes quiz-step-in { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }
+.quiz-navigation { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.quiz-navigation #next-question { margin-left: auto; }
+.quiz-navigation #submit-quiz { margin-left: auto; }
+.secondary-quiz-button { background: #f1edf5; color: #6c536f; }
+.secondary-quiz-button:hover { background: #e6ddea; }
+.secondary-quiz-button:disabled { opacity: .45; cursor: not-allowed; }
+.quiz-validation { min-height: 18px; margin: 0 0 10px; color: #a43b50; font-size: 12px; }
 .question p { margin-bottom: 13px; color: #312e38; font-size: 13px; }
 .option { margin: 8px 0 0; padding: 11px 12px; border: 1px solid #e5e5eb; border-radius: 7px; background: #fff; color: #5e5b66; cursor: pointer; font-weight: 400; }
 .option:hover { border-color: #c38aed; background: #fcf7ff; }

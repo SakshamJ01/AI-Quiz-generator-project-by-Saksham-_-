@@ -117,23 +117,28 @@ if (isset($_POST['submit_quiz']) && $quiz) {
 
         <?php if ($quiz) { ?>
             <div class="card quiz-card">
-                <div class="section-heading"><div><p class="eyebrow">READY TO ANSWER</p><h2><?php echo h($quiz['topic']); ?> Quiz</h2></div><span class="question-count"><?php echo count($quiz['questions']); ?> questions</span></div>
+                <div class="section-heading"><div><p class="eyebrow">READY TO ANSWER</p><h2><?php echo h($quiz['topic']); ?> Quiz</h2></div><span class="question-count"><span id="current-question">1</span> / <?php echo count($quiz['questions']); ?></span></div>
 
-                <form method="post">
+                <form method="post" id="quiz-form" class="step-quiz-form">
                     <?php foreach ($quiz['questions'] as $index => $question) { ?>
-                        <div class="question">
+                        <div class="question quiz-step<?php echo $index === 0 ? ' active-step' : ''; ?>" data-step="<?php echo $index; ?>">
                             <p><b><?php echo $index + 1; ?>. <?php echo h($question['question']); ?></b></p>
 
                             <?php foreach ($question['options'] as $option_index => $option) { ?>
                                 <label class="option">
-                                    <input type="radio" name="answer[<?php echo $index; ?>]" value="<?php echo $option_index; ?>" required>
+                                    <input type="radio" name="answer[<?php echo $index; ?>]" value="<?php echo $option_index; ?>">
                                     <?php echo h($option); ?>
                                 </label>
                             <?php } ?>
                         </div>
                     <?php } ?>
 
-                    <button type="submit" name="submit_quiz">Submit Quiz</button>
+                    <p id="quiz-validation" class="quiz-validation" role="alert"></p>
+                    <div class="quiz-navigation">
+                        <button type="button" id="previous-question" class="secondary-quiz-button">&larr; Previous</button>
+                        <button type="button" id="next-question">Next &rarr;</button>
+                        <button type="submit" name="submit_quiz" id="submit-quiz">Submit Quiz</button>
+                    </div>
                 </form>
             </div>
         <?php } ?>
@@ -141,4 +146,67 @@ if (isset($_POST['submit_quiz']) && $quiz) {
         </main>
     </div>
 </body>
+<?php if ($quiz) { ?>
+<script>
+    const quizSteps = Array.from(document.querySelectorAll('.quiz-step'));
+    const quizForm = document.getElementById('quiz-form');
+    const previousQuestion = document.getElementById('previous-question');
+    const nextQuestion = document.getElementById('next-question');
+    const submitQuiz = document.getElementById('submit-quiz');
+    const currentQuestion = document.getElementById('current-question');
+    const quizValidation = document.getElementById('quiz-validation');
+    let activeStep = 0;
+
+    function hasAnswer(stepIndex) {
+        return Boolean(quizSteps[stepIndex].querySelector('input[type="radio"]:checked'));
+    }
+
+    function showStep(stepIndex) {
+        activeStep = stepIndex;
+        quizSteps.forEach(function (step, index) {
+            step.classList.toggle('active-step', index === activeStep);
+        });
+        currentQuestion.textContent = activeStep + 1;
+        previousQuestion.disabled = activeStep === 0;
+        nextQuestion.hidden = activeStep === quizSteps.length - 1;
+        submitQuiz.hidden = activeStep !== quizSteps.length - 1;
+        quizValidation.textContent = '';
+    }
+
+    function validateStep() {
+        if (hasAnswer(activeStep)) {
+            quizValidation.textContent = '';
+            return true;
+        }
+        quizValidation.textContent = 'Please choose an answer before continuing.';
+        return false;
+    }
+
+    previousQuestion.addEventListener('click', function () {
+        if (activeStep > 0) {
+            showStep(activeStep - 1);
+        }
+    });
+
+    nextQuestion.addEventListener('click', function () {
+        if (validateStep() && activeStep < quizSteps.length - 1) {
+            showStep(activeStep + 1);
+        }
+    });
+
+    quizForm.addEventListener('submit', function (event) {
+        const unansweredStep = quizSteps.findIndex(function (step) {
+            return !step.querySelector('input[type="radio"]:checked');
+        });
+
+        if (unansweredStep !== -1) {
+            event.preventDefault();
+            showStep(unansweredStep);
+            quizValidation.textContent = 'Please answer every question before submitting.';
+        }
+    });
+
+    showStep(0);
+</script>
+<?php } ?>
 </html>
